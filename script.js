@@ -93,7 +93,7 @@ function renderRound() {
   const current = nayaMoods[currentIndex];
 
   // מציגים את התמונה
-  imgEl.src = `images/${current.file}`;
+  imgEl.src = `/${current.file}`;
 
   // מאפסים תוצאה
   resultEl.textContent = "Make a guess 💭";
@@ -115,6 +115,7 @@ function renderRound() {
   // מסתירים הודעת סוף משחק
   finalMsgEl.style.display = "none";
 }
+
 
 // ------------------------------------
 // מעבר לתמונה הבאה
