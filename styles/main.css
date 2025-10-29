@@ -1,0 +1,243 @@
+/* ====== Google Fonts import (Task 1: custom fonts) ====== */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+
+/* ====== CSS Variables (Task 1: edit CSS variables) ====== */
+:root {
+  --page-bg: radial-gradient(circle at 20% 20%, #ffe8f4 0%, #fff9e6 60%, #ffffff 100%);
+  --card-bg: #ffffffcc;
+  --card-border: rgba(255, 182, 193, 0.4);
+  --accent-color: #ff4b91;
+  --text-main: #2d2d2d;
+  --text-dim: #6b6b6b;
+  --text-low: #444;
+  --error-color: #b61d3d;
+  --success-color: #1a7f1a;
+  --btn-border: #ffc1d9;
+  --btn-border-hover: #ff8fc0;
+  --btn-bg-hover: #ffe8f4;
+  --shadow-card-big: 0 30px 60px rgba(255, 105, 180, 0.2),
+                     0 10px 20px rgba(0, 0, 0, 0.07);
+  --shadow-btn: 0 8px 16px rgba(255, 105, 180, 0.15);
+  --shadow-btn-hover: 0 10px 20px rgba(255, 105, 180, 0.2);
+  --wrong-shadow: 0 8px 16px rgba(255, 0, 80, 0.15);
+}
+
+
+/* ====== רקע כללי ====== */
+body {
+  background: var(--page-bg);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: var(--text-main);
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+
+/* ====== הקלף המרכזי ====== */
+.card {
+  background: var(--card-bg);
+  backdrop-filter: blur(8px);
+  width: 100%;
+  max-width: 360px;
+  border-radius: 24px;
+  box-shadow: var(--shadow-card-big);
+  padding: 24px;
+  text-align: center;
+  border: 1px solid var(--card-border);
+
+  /* כדי לעמוד בדרישה "Use Flexbox to layout your page" */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+/* ====== כותרת ====== */
+.title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--accent-color);
+  margin: 0;
+}
+
+.subtitle {
+  font-size: 0.9rem;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+
+
+/* ====== אזור התמונה ====== */
+.image-area {
+  position: relative;
+  margin-top: 20px;
+}
+
+#naya-image {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 20px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+  border: 3px solid #fff;
+}
+
+
+/* ====== שאלה ("Choose a mood:") ====== */
+.question {
+  margin-top: 28px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-low);
+}
+
+
+/* ====== כפתורים ====== */
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.mood-btn {
+  background: #fff;
+  border: 2px solid var(--btn-border);
+  border-radius: 14px;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 10px;
+  cursor: pointer;
+  transition: all 0.18s ease; /* (Task 3: CSS transition for interactivity) */
+  box-shadow: var(--shadow-btn);
+}
+
+.mood-btn:hover {
+  background: var(--btn-bg-hover);
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: var(--shadow-btn-hover);
+  border-color: var(--btn-border-hover);
+}
+
+/* כפתור שננחש לא נכון */
+.mood-btn.wrong-guess {
+  border-color: #ff9aa9;
+  background: #ffeef1;
+  box-shadow: var(--wrong-shadow);
+  color: var(--error-color);
+  font-weight: 600;
+}
+
+
+/* ====== אזור התוצאה + אנימציה בכיתה ====== */
+.result-area {
+  margin-top: 20px;
+  min-height: 40px;
+}
+
+/* הבנו לדרישה: "Use JS to add/remove class and animate appearance" */
+.result-text {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-low);
+  text-align: center;
+  min-height: 2em;
+  transition: color 0.3s ease; /* שינוי צבע חלק */
+}
+
+.result-correct {
+  color: var(--success-color);
+}
+
+.result-wrong {
+  color: var(--error-color);
+}
+
+
+/* ====== כפתור NEXT והודעת סיום ====== */
+.next-area {
+  margin-top: 20px;
+  min-height: 48px;
+}
+
+.next-btn {
+  background: linear-gradient(90deg,#ff72c6,#ffa3cf);
+  border: 0;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 10px 16px;
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(255, 0, 128, 0.3),
+              0 4px 8px rgba(0,0,0,0.12);
+  cursor: pointer;
+  display: none; /* מוצג רק אחרי ניחוש נכון */
+  transition: all 0.18s ease;
+}
+
+.next-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.final-message {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--accent-color);
+  text-align: center;
+  display: none;
+}
+
+
+/* ====== פוטר ====== */
+.footer {
+  margin-top: 24px;
+  font-size: 0.7rem;
+  color: #a1a1a1;
+  text-align: center;
+}
+
+.tiny-note {
+  margin: 0;
+  font-style: italic;
+  font-size: 0.75rem;
+}
+
+.tiny-note a {
+  color: var(--accent-color);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.tiny-note a:hover {
+  text-decoration: underline;
+}
+
+
+/* ====== קונפטי ====== */
+.confetti-piece {
+  position: fixed;          /* על כל המסך ומעל הכול */
+  width: 10px;
+  height: 10px;
+  background: hsl(calc(360 * var(--hue, 0.5)), 90%, 60%);
+  border-radius: 50%;
+  z-index: 9999;
+  animation: fall 1s ease-out forwards;
+  pointer-events: none;     /* לא לחסום קליקים */
+}
+
+@keyframes fall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(150vh) rotate(720deg);
+    opacity: 0;
+  }
+}

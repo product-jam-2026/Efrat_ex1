@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guess Naya's Mood 💖</title>
+
+  <link rel="stylesheet" href="styles/reset.css" />
+  <link rel="stylesheet" href="styles/main.css" />
+  <style>
+    /* תוספות קטנות למשחקיות */
+
+    .next-area {
+      margin-top: 20px;
+      min-height: 48px;
+    }
+
+    .next-btn {
+      background: linear-gradient(90deg,#ff72c6,#ffa3cf);
+      border: 0;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 10px 16px;
+      border-radius: 12px;
+      box-shadow: 0 10px 20px rgba(255, 0, 128, 0.3),
+                  0 4px 8px rgba(0,0,0,0.12);
+      cursor: pointer;
+      display: none; /* יהיה block אחרי שננחש */
+    }
+
+    .next-btn:disabled {
+      opacity: 0.5;
+      cursor: default;
+    }
+
+    .final-message {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #ff4b91;
+      text-align: center;
+      display: none;
+    }
+
+    /* קונפטי (פשוט, divים נופלים) */
+    .confetti-piece {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: radial-gradient(circle at 30% 30%, #fff 0%, #ff7ac6 40%, #ff4b91 60%);
+      border-radius: 2px;
+      animation: fall 1s ease-out forwards;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    @keyframes fall {
+      0%   { opacity: 1; transform: translateY(0) rotate(0deg) scale(1); }
+      100% { opacity: 0; transform: translateY(80px) rotate(360deg) scale(0.6); }
+    }
+
+    /* הודעת נכון/לא נכון קצת יותר מודגשת */
+    .result-text {
+      font-size: 1rem;
+      font-weight: 500;
+      text-align: center;
+      min-height: 2em;
+    }
+
+    .result-correct {
+      color: #1a7f1a;
+    }
+    .result-wrong {
+      color: #b61d3d;
+    }
+
+    /* עושים את אזור התמונה position:relative כי הורדנו את ה-badge */
+    .image-area {
+      position: relative;
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    #naya-image {
+      width: 260px;
+      height: 260px;
+      object-fit: cover;
+      border-radius: 20px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+      border: 3px solid #fff;
+      display: block;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <header class="header">
+      <h1 class="title">Guess Naya's Mood</h1>
+      <p class="subtitle">Which Naya are we looking at?</p>
+    </header>
+
+    <section class="image-area">
+      <img id="naya-image" src="" alt="Naya's mood" />
+      <!-- הורדנו את הבלוק הורוד שהיה כאן -->
+    </section>
+
+    <section class="question">
+      <p>Choose a mood:</p>
+    </section>
+
+    <section class="buttons">
+      <button class="mood-btn" data-mood="Fairy">Fairy 🧚</button>
+      <button class="mood-btn" data-mood="Hungry3">Hungry 😋</button>
+      <button class="mood-btn" data-mood="Silly">Silly 🤪</button>
+      <button class="mood-btn" data-mood="Tired">Tired 😴</button>
+    </section>
+
+    <section class="result-area">
+      <p id="result" class="result-text">Make a guess 💭</p>
+    </section>
+
+    <section class="next-area">
+      <button id="next-btn" class="next-btn">Next ➜</button>
+      <p id="final-message" class="final-message">Come back soon for more pictures 💖</p>
+    </section>
+
+    <footer class="footer">
+      <p class="tiny-note">© Naya Inc. (CEO since birth)</p>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
