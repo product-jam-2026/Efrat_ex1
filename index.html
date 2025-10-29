@@ -130,6 +130,167 @@
     </footer>
   </main>
 
-  <script src="script.js"></script>
-</body>
+<script>
+  // כל התוכן של script.js פה
+  // ------------------------------------
+  // מאגר התמונות/מצבים של נאיה
+  // ------------------------------------
+  const originalMoods = [
+    { name: "Fairy",    file: "Fairy.jpeg",    niceLabel: "Fairy 🧚"    },
+    { name: "Hungry3",  file: "Hungry3.jpeg",  niceLabel: "Hungry 😋"   },
+    { name: "Silly",    file: "Silly.jpeg",    niceLabel: "Silly 🤪"    },
+    { name: "Tired",    file: "Tired.jpeg",    niceLabel: "Tired 😴"    },
+  ];
+
+  let nayaMoods = [];
+  let currentIndex = 0;
+  let gameOver = false;
+  let roundSolved = false;
+
+  const imgEl = document.getElementById("naya-image");
+  const resultEl = document.getElementById("result");
+  const buttons = document.querySelectorAll(".mood-btn");
+  const nextBtn = document.getElementById("next-btn");
+  const finalMsgEl = document.getElementById("final-message");
+
+  function shuffleArray(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function throwConfetti() {
+    const rect = imgEl.getBoundingClientRect();
+    const originX = rect.left + rect.width / 2;
+    const originY = rect.top + rect.height / 2;
+    const NUM_PIECES = 80;
+
+    for (let i = 0; i < NUM_PIECES; i++) {
+      const piece = document.createElement("div");
+      piece.classList.add("confetti-piece");
+
+      const spreadX = (Math.random() - 0.5) * rect.width * 0.8;
+      const spreadY = (Math.random() - 0.5) * rect.height * 0.4;
+
+      piece.style.left = originX + spreadX + "px";
+      piece.style.top = originY + spreadY + "px";
+
+      piece.style.setProperty("--hue", Math.random());
+
+      const size = Math.random() * 8 + 4;
+      piece.style.width = `${size}px`;
+      piece.style.height = `${size}px`;
+
+      piece.style.animationDuration = 1 + Math.random() * 1.5 + "s";
+      piece.style.transform = `rotate(${Math.random() * 360}deg)`;
+
+      document.body.appendChild(piece);
+
+      setTimeout(() => {
+        piece.remove();
+      }, 2000);
+    }
+  }
+
+  function renderRound() {
+    const current = nayaMoods[currentIndex];
+    // שימי לב: נטען מהשורש, כי Vercel מגיש את התמונות עם ה-URL הישיר
+    imgEl.src = `/${current.file}`;
+
+    resultEl.textContent = "Make a guess 💭";
+    resultEl.classList.remove("result-correct", "result-wrong");
+
+    nextBtn.style.display = "none";
+    nextBtn.disabled = false;
+
+    roundSolved = false;
+
+    buttons.forEach((btn) => {
+      btn.disabled = false;
+      btn.classList.remove("wrong-guess");
+    });
+
+    finalMsgEl.style.display = "none";
+  }
+
+  function goNext() {
+    if (gameOver) return;
+
+    currentIndex++;
+
+    if (currentIndex >= nayaMoods.length) {
+      gameOver = true;
+      showGameOver();
+    } else {
+      renderRound();
+    }
+  }
+
+  function showGameOver() {
+    imgEl.src = "";
+    resultEl.textContent = "";
+    nextBtn.style.display = "none";
+    finalMsgEl.style.display = "block";
+
+    buttons.forEach((btn) => {
+      btn.disabled = true;
+    });
+  }
+
+  buttons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      if (gameOver) return;
+
+      const guessed = btn.getAttribute("data-mood"); // Fairy / Hungry3 / Silly / Tired
+      const current = nayaMoods[currentIndex];
+      const correct = guessed === current.name;
+
+      if (correct) {
+        resultEl.textContent = `Correct! This is "${current.niceLabel}" 😍`;
+        resultEl.classList.remove("result-wrong");
+        resultEl.classList.add("result-correct");
+        throwConfetti();
+        roundSolved = true;
+
+        buttons.forEach((b) => {
+          b.disabled = true;
+        });
+
+        nextBtn.style.display = "inline-block";
+
+      } else {
+        resultEl.textContent = `Not this one 😅 Try again!`;
+        resultEl.classList.remove("result-correct");
+        resultEl.classList.add("result-wrong");
+        btn.classList.add("wrong-guess");
+      }
+    });
+  });
+
+  nextBtn.addEventListener("click", () => {
+    if (gameOver) return;
+    if (roundSolved) {
+      goNext();
+    } else {
+      nextBtn.disabled = true;
+      setTimeout(() => {
+        nextBtn.disabled = false;
+      }, 600);
+    }
+  });
+
+  function startGame() {
+    nayaMoods = shuffleArray(originalMoods);
+    currentIndex = 0;
+    gameOver = false;
+    roundSolved = false;
+
+    renderRound();
+  }
+
+  startGame();
+</script></body>
 </html>
